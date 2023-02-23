@@ -1,30 +1,43 @@
-def encrypt_vigenere(plaintext: str, keyword: str) -> str:
-    """
-    Encrypts plaintext using a Vigenere cipher.
+import string
 
-    >>> encrypt_vigenere("PYTHON", "A")
-    'PYTHON'
-    >>> encrypt_vigenere("python", "a")
-    'python'
-    >>> encrypt_vigenere("ATTACKATDAWN", "LEMON")
-    'LXFOPVEFRNHR'
-    """
+
+def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     ciphertext = ""
-    # PUT YOUR CODE HERE
+    alph_up = string.ascii_uppercase
+    alph_low = string.ascii_lowercase
+
+    for i, letter in enumerate(plaintext):
+        if letter.isupper():
+            index = alph_up.index(letter)
+            keyword_index = alph_up.index(keyword[i % len(keyword)].upper())
+            index = (index + keyword_index) % len(alph_up)
+            ciphertext += alph_up[index]
+        elif letter.islower():
+            index = alph_low.index(letter)
+            keyword_index = alph_low.index(keyword[i % len(keyword)].lower())
+            index = (index + keyword_index) % len(alph_low)
+            ciphertext += alph_low[index]
+        else:
+            ciphertext += letter
     return ciphertext
 
 
 def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
-    """
-    Decrypts a ciphertext using a Vigenere cipher.
-
-    >>> decrypt_vigenere("PYTHON", "A")
-    'PYTHON'
-    >>> decrypt_vigenere("python", "a")
-    'python'
-    >>> decrypt_vigenere("LXFOPVEFRNHR", "LEMON")
-    'ATTACKATDAWN'
-    """
     plaintext = ""
-    # PUT YOUR CODE HERE
+    alph_up = string.ascii_uppercase
+    alph_low = string.ascii_lowercase
+
+    for i, letter in enumerate(ciphertext):
+        if letter.isupper():
+            index = alph_up.index(letter)
+            keyword_index = alph_up.index(keyword[i % len(keyword)].upper())
+            index = (index - keyword_index) % len(alph_up)
+            plaintext += alph_up[index]
+        elif letter.islower():
+            index = alph_low.index(letter)
+            keyword_index = alph_low.index(keyword[i % len(keyword)].lower())
+            index = (index - keyword_index) % len(alph_low)
+            plaintext += alph_low[index]
+        else:
+            plaintext += letter
     return plaintext
